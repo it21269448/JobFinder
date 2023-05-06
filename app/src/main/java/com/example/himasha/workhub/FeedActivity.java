@@ -3,12 +3,12 @@ package com.example.himasha.workhub;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -113,6 +113,11 @@ public class FeedActivity extends AppCompatActivity {
 
             AlertDialog alert = builder.create();
             alert.show();
+        } else if (item.getItemId() == R.id.savedJobs) {
+            Fragment savedJobFragment = SavedJobFragment.newInstance();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.frame_layout, savedJobFragment);
+            transaction.commit();
         }
         return super.onOptionsItemSelected(item);
 

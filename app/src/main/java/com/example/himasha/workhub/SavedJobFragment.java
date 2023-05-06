@@ -2,26 +2,27 @@ package com.example.himasha.workhub;
 
 import android.content.Intent;
 import android.os.Bundle;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-public class JobFragment extends Fragment {
+public class SavedJobFragment extends Fragment {
     FloatingActionButton actionButton;
     RecyclerView job_list;
     DatabaseReference workhub;
-    public static JobFragment newInstance() {
-        JobFragment fragment = new JobFragment();
+    public static SavedJobFragment newInstance() {
+        SavedJobFragment fragment = new SavedJobFragment();
         return fragment;
     }
 
@@ -33,7 +34,7 @@ public class JobFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_job, container, false);
+        View view = inflater.inflate(R.layout.fragment_saved_job, container, false);
         initViews(view);
         return view;
     }
@@ -101,22 +102,13 @@ public class JobFragment extends Fragment {
     }
 
     private void initViews(View view) {
-        workhub = FirebaseDatabase.getInstance().getReference().child("jobs");
+        workhub = FirebaseDatabase.getInstance().getReference().child("saved_jobs");
         workhub.keepSynced(true);
 
-        actionButton = (FloatingActionButton)view.findViewById(R.id.floatingActionButton2);
         job_list = (RecyclerView)view.findViewById(R.id.job_list);
         job_list.setHasFixedSize(true);
         job_list.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 
-        actionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AddJobActivity.class);
-                startActivity(intent);
-
-            }
-        });
     }
 
 }

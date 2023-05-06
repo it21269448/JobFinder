@@ -3,19 +3,17 @@ package com.example.himasha.workhub;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,7 +21,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class SingleJobView extends AppCompatActivity {
@@ -41,6 +38,8 @@ public class SingleJobView extends AppCompatActivity {
 
     private Button deletejob;
     private Button editjob;
+    private Button saveJob;
+    private Button feedbackJob;
 
     private RecyclerView sugges_list;
 
@@ -86,7 +85,9 @@ public class SingleJobView extends AppCompatActivity {
         jobPostedMap = (TextView) findViewById(R.id.singlejobMapName);
 
         deletejob = (Button) findViewById(R.id.singlejobDeleteBTN);
+        saveJob = (Button) findViewById(R.id.saveJobButton);
         editjob = (Button) findViewById(R.id.singlejobEditBTN);
+        feedbackJob = (Button) findViewById(R.id.feedbackButton);
 
         sugges_list = (RecyclerView)findViewById(R.id.sugges_list);
         sugges_list.setHasFixedSize(true);
@@ -215,8 +216,80 @@ public class SingleJobView extends AppCompatActivity {
             }
         });
 
+        saveJob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builder.setTitle("Confirm");
+                builder.setMessage("Are you sure you want to save this job?");
+
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(job_key != null) {
+                            workhubJobs.child("saved_jobs").push();
+
+                            Intent intent2 = new Intent(SingleJobView.this, FeedActivity.class);
+                            startActivity(intent2);
+                            finish();
+                        }
+
+                        dialog.dismiss();
+                    }
+                });
+
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // Do nothing
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alert = builder.create();
+                alert.show();
+
+            }
+        });
 
 
+        feedbackJob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builder.setTitle("Confirm");
+                builder.setMessage("Are you sure you want to save this job?");
+
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(job_key != null) {
+                            workhubJobs.child("saved_jobs").push();
+
+                            Intent intent2 = new Intent(SingleJobView.this, FeedActivity.class);
+                            startActivity(intent2);
+                            finish();
+                        }
+
+                        dialog.dismiss();
+                    }
+                });
+
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // Do nothing
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alert = builder.create();
+                alert.show();
+
+            }
+        });
 
 
     }

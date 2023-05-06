@@ -1,6 +1,6 @@
 package com.example.himasha.workhub;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -68,11 +68,21 @@ public class EditProfileActivity extends AppCompatActivity {
                 String telephone = profileTelephone.getText().toString();
                 String email = profileEmail.getText().toString();
 
-                workhub.child("userBio").setValue(bio);
-                workhub.child("userAddress").setValue(address);
-                workhub.child("userWebsite").setValue(website);
-                workhub.child("userTelephone").setValue(telephone);
-                workhub.child("userEmail").setValue(email);
+                workhub.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        workhub.child("userBio").setValue(bio);
+                        workhub.child("userAddress").setValue(address);
+                        workhub.child("userWebsite").setValue(website);
+                        workhub.child("userTelephone").setValue(telephone);
+                        workhub.child("userEmail").setValue(email);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 
                 Toast.makeText(EditProfileActivity.this,"Changes saved!",Toast.LENGTH_SHORT).show();
             }

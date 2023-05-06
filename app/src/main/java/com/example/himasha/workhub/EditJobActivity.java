@@ -2,8 +2,8 @@ package com.example.himasha.workhub;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
@@ -83,16 +82,16 @@ public class EditJobActivity extends AppCompatActivity {
             }
         });
 
-        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
-                .setTypeFilter(Place.TYPE_COUNTRY)
-                .setCountry("LK")
-                .build();
-
-        places.setFilter(typeFilter);
-        ((View)findViewById(R.id.place_autocomplete_search_button)).setVisibility(View.GONE);
-        ((EditText)findViewById(R.id.place_autocomplete_search_input)).setBackgroundResource(R.drawable.input_outline);
-        ((EditText)findViewById(R.id.place_autocomplete_search_input)).setTextSize(18);
-        ((EditText)findViewById(R.id.place_autocomplete_search_input)).setPadding(32,32,32,32);
+//        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+//                .setTypeFilter(Place.TYPE_COUNTRY)
+//                .setCountry("LK")
+//                .build();
+//
+//        places.setFilter(typeFilter);
+//        ((View)findViewById(R.id.place_autocomplete_search_button)).setVisibility(View.GONE);
+//        ((EditText)findViewById(R.id.place_autocomplete_search_input)).setBackgroundResource(R.drawable.input_outline);
+//        ((EditText)findViewById(R.id.place_autocomplete_search_input)).setTextSize(18);
+//        ((EditText)findViewById(R.id.place_autocomplete_search_input)).setPadding(32,32,32,32);
 
         places.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -117,8 +116,9 @@ public class EditJobActivity extends AppCompatActivity {
                 final String jname = editJobName.getText().toString();
                 final String jdesc = editJobDesc.getText().toString();
                 final String jbudget = editJobBudget.getText().toString();
+                final String jLoc = editLocat.getText().toString();
 
-                if (!TextUtils.isEmpty(jname) && !TextUtils.isEmpty(jdesc) && !TextUtils.isEmpty(jbudget) && !TextUtils.isEmpty(editJobLocation))
+                if (!TextUtils.isEmpty(jname) && !TextUtils.isEmpty(jdesc) && !TextUtils.isEmpty(jbudget) && !TextUtils.isEmpty(jLoc))
                 {
                     builder.setTitle("Confirm");
                     builder.setMessage("Save changes?");
@@ -134,7 +134,7 @@ public class EditJobActivity extends AppCompatActivity {
                                     dataSnapshot.getRef().child("jobName").setValue(jname);
                                     dataSnapshot.getRef().child("jobDesc").setValue(jdesc);
                                     dataSnapshot.getRef().child("jobBudget").setValue(jbudget);
-                                    dataSnapshot.getRef().child("jobLocationName").setValue(editJobLocation);
+                                    dataSnapshot.getRef().child("jobLocationName").setValue(jLoc);
                                     dataSnapshot.getRef().child("jobLocationLong").setValue(jobLong);
                                     dataSnapshot.getRef().child("jobLocationLat").setValue(jobLat);
                                 }

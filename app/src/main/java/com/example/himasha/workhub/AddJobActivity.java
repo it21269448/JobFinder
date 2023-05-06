@@ -2,13 +2,11 @@ package com.example.himasha.workhub;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -16,11 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.AutocompleteFilter;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,7 +32,7 @@ public class AddJobActivity extends AppCompatActivity {
     private Button submitjob;
     private AutoCompleteTextView addjobSkills;
 
-    private String addJobLocation;
+    private EditText addJobLocation;
 
     private FirebaseAuth auth;
     private DatabaseReference workhub;
@@ -75,43 +68,44 @@ public class AddJobActivity extends AppCompatActivity {
 
         addJobName = (EditText)findViewById(R.id.addjobJobNameET);
         addJobDesc = (EditText)findViewById(R.id.addjobDescET);
+        addJobLocation = (EditText)findViewById(R.id.addLocation1);
         addJobBudget = (EditText)findViewById(R.id.addjobBudgetET);
         submitjob = (Button)findViewById(R.id.submitjobBTN);
         addjobSkills = (AutoCompleteTextView)findViewById(R.id.addjobSkilltET);
         addjobSkills.setThreshold(1);
         addjobSkills.setAdapter(adapter);
 
-        PlaceAutocompleteFragment places= (PlaceAutocompleteFragment)
-                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+//        PlaceAutocompleteFragment places= (PlaceAutocompleteFragment)
+//                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+//
+//        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+//                .setTypeFilter(Place.TYPE_COUNTRY)
+//                .setCountry("LK")
+//                .build();
+//
+//        places.setFilter(typeFilter);
+//
+//        places.setHint("e.g Malabe");
+//        ((View)findViewById(R.id.place_autocomplete_search_button)).setVisibility(View.GONE);
+//        ((EditText)findViewById(R.id.place_autocomplete_search_input)).setBackgroundResource(R.drawable.input_outline);
+//        ((EditText)findViewById(R.id.place_autocomplete_search_input)).setTextSize(18);
+//        ((EditText)findViewById(R.id.place_autocomplete_search_input)).setPadding(32,32,32,32);
 
-        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
-                .setTypeFilter(Place.TYPE_COUNTRY)
-                .setCountry("LK")
-                .build();
-
-        places.setFilter(typeFilter);
-
-        places.setHint("e.g Malabe");
-        ((View)findViewById(R.id.place_autocomplete_search_button)).setVisibility(View.GONE);
-        ((EditText)findViewById(R.id.place_autocomplete_search_input)).setBackgroundResource(R.drawable.input_outline);
-        ((EditText)findViewById(R.id.place_autocomplete_search_input)).setTextSize(18);
-        ((EditText)findViewById(R.id.place_autocomplete_search_input)).setPadding(32,32,32,32);
-
-        places.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-
-                tripLat = place.getLatLng().latitude;
-                tripLong = place.getLatLng().longitude;
-                addJobLocation = place.getName().toString();
-
-            }
-            @Override
-            public void onError(Status status) {
-
-            }
-
-        });
+//        places.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+//            @Override
+//            public void onPlaceSelected(Place place) {
+//
+//                tripLat = place.getLatLng().latitude;
+//                tripLong = place.getLatLng().longitude;
+//                addJobLocation = place.getName().toString();
+//
+//            }
+//            @Override
+//            public void onError(Status status) {
+//
+//            }
+//
+//        });
 
         workhubUsers.child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -130,9 +124,10 @@ public class AddJobActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String jname = addJobName.getText().toString();
                 final String jdesc = addJobDesc.getText().toString();
+                final String jLoc = addJobLocation.getText().toString();
                 final String jbudget = addJobBudget.getText().toString();
                 final String skill = addjobSkills.getText().toString();
-                if (!TextUtils.isEmpty(jname) && !TextUtils.isEmpty(jdesc) && !TextUtils.isEmpty(jbudget) && !TextUtils.isEmpty(addJobLocation) && !TextUtils.isEmpty(skill))
+                if (!TextUtils.isEmpty(jname) && !TextUtils.isEmpty(jdesc) && !TextUtils.isEmpty(jbudget) && !TextUtils.isEmpty(jLoc) && !TextUtils.isEmpty(skill))
                 {
                     builder.setTitle("Confirm");
                     builder.setMessage("Are you sure you want to post this job?");
@@ -155,7 +150,7 @@ public class AddJobActivity extends AppCompatActivity {
                             newJob.setJobName(jname);
                             newJob.setJobDesc(jdesc);
                             newJob.setJobBudget(jbudget);
-                            newJob.setJobLocationName(addJobLocation);
+                            newJob.setJobLocationName(jLoc);
                             newJob.setJobLocationLat(tripLat);
                             newJob.setJobLocationLong(tripLong);
                             newJob.setJobPostedDate(jdate);
