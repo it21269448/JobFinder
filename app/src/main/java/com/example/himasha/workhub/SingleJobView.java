@@ -146,7 +146,9 @@ public class SingleJobView extends AppCompatActivity {
             public void onClick(View v) {
                 if (posteduserid.equals(auth.getCurrentUser().getUid()))
                 {
-
+                    Intent intent = new Intent(SingleJobView.this, SingleProfileActivity.class);
+                    intent.putExtra("user_id", posteduserid);
+                    startActivity(intent);
                 }
                 else {
                     Intent intent = new Intent(SingleJobView.this, SingleProfileActivity.class);
